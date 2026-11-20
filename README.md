@@ -20,10 +20,10 @@ Requires Python 3.10 or newer.
 
 ```bash
 # Recommended: isolated install of the CLI
-pipx install git+https://github.com/jahau/wp-security-doctor.git@v0.2.0
+pipx install git+https://github.com/jahau/wp-security-doctor.git@v0.3.0
 
 # Or with pip
-pip install git+https://github.com/jahau/wp-security-doctor.git@v0.2.0
+pip install git+https://github.com/jahau/wp-security-doctor.git@v0.3.0
 
 # Or straight from a checkout, no install needed
 git clone https://github.com/jahau/wp-security-doctor.git
@@ -39,6 +39,7 @@ you should not run it as root unless reading the files requires that.
 ```bash
 wp-security-doctor scan /path/to/wordpress                       # all checks, terminal output
 wp-security-doctor scan /path/to/wordpress --format json         # machine-readable report
+wp-security-doctor scan /path/to/wordpress --format sarif -o /tmp/wpsd.sarif  # GitHub code scanning
 wp-security-doctor scan /path/to/wordpress --checks core,files,config
 wp-security-doctor scan /path/to/wordpress --offline             # guarantee: no network at all
 wp-security-doctor scan /path/to/wordpress -o /tmp/report.json --format json
@@ -50,7 +51,8 @@ python -m wp_security_doctor scan /path/to/wordpress
 
 | Option | Meaning |
 | --- | --- |
-| `--format text\|json` | Output format (default `text`). |
+| `--format text\|json\|sarif` | Output format (default `text`). `sarif` is SARIF 2.1.0 for GitHub code scanning, see [docs/github-code-scanning.md](docs/github-code-scanning.md). |
+| `--sarif-path-prefix DIR` | With `--format sarif`: repository-relative directory of the scanned path, prepended to file locations. |
 | `--checks LIST` | Comma-separated subset of `core,config,files,permissions,plugins`. |
 | `--offline` | Explicitly forbid network access. This is already the default; combining it with `--fetch-checksums` or `--wp-cli` is an error. |
 | `--core-checksums FILE` | Verify core against an official checksum JSON file, fully offline (see below). |
@@ -63,7 +65,7 @@ python -m wp_security_doctor scan /path/to/wordpress
 | `--color auto\|always\|never` | Terminal colors (also respects `NO_COLOR`). |
 
 **Exit codes:** `0` = no open finding at or above `--fail-on`; `1` = at least one; `2` = usage
-error, not a WordPress directory, or the scan could not run.
+error, not a WordPress directory, or the scan could not run. Exit codes do not depend on `--format`.
 
 ### Supported layouts
 
@@ -196,6 +198,16 @@ sorted by status, then severity, then rule ID. Excerpt:
 }
 ```
 
+### SARIF output and GitHub code scanning
+
+`--format sarif` writes a [SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html)
+log. Each rule keeps its `WPSD-*` ID. Severities map to SARIF levels and GitHub `security-severity`.
+Each FAIL/WARN location becomes one alert with a relative file path, and line numbers are
+included where known. The log contains no absolute paths, host or user names, timestamps or
+secrets. See [docs/github-code-scanning.md](docs/github-code-scanning.md) for the full mapping,
+and [an example workflow](docs/examples/wp-security-doctor-code-scanning.yml) that uploads the
+results with `github/codeql-action/upload-sarif`.
+
 ## Reading the results
 
 Each finding carries three independent labels:
@@ -303,6 +315,8 @@ often updated independently of core.
 - **Secrets stay local.** Key/salt findings list constant *names* only. As a final safeguard,
   the values of `DB_PASSWORD`, `FTP_PASS` and all keys/salts are replaced with `[REDACTED]`
   anywhere they appear in a report, including in file names.
+- **Shareable SARIF.** The SARIF report also leaves out absolute paths (the scan root, its
+  parent and any absolute path in evidence), the command line and timestamps.
 - **Bounded traversal.** Directory symlinks are never followed. File symlinks are read only if
   they resolve inside the scan root. `.git`, `.svn`, `.hg` and `node_modules` are not descended
   into. Entry count, depth and bytes read per file are capped, and anything skipped is reported
@@ -367,7 +381,7 @@ core plus WooCommerce, Yoast SEO, Elementor, Jetpack, Wordfence, UpdraftPlus and
 ```bash
 python -m venv .venv && . .venv/bin/activate     # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
-pytest              # unit and integration tests on synthetic WordPress fixtures
+pytest              # unit and integration tests on synthetic WordPress fixtures (incl. SARIF schema validation)
 ruff check . && ruff format --check .
 mypy                # strict mode
 ```

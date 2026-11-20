@@ -48,6 +48,10 @@ jobs:
           wp-security-doctor --version
           wp-security-doctor rules > /dev/null
           python wp_doctor.py --help > /dev/null
+      - name: SARIF smoke test (schema validation of a synthetic scan)
+        shell: bash
+        run: |
+          python tests/sarif_smoke.py "$RUNNER_TEMP/wpsd-smoke"
 
   build:
     runs-on: ubuntu-latest

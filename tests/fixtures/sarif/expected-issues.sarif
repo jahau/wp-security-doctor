@@ -1,0 +1,1191 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "wp-security-doctor",
+          "version": "<version>",
+          "semanticVersion": "<version>",
+          "informationUri": "https://github.com/jahau/wp-security-doctor",
+          "rules": [
+            {
+              "id": "WPSD-CONFIG-001",
+              "shortDescription": {
+                "text": "wp-config.php located and parsed"
+              },
+              "fullDescription": {
+                "text": "The configuration file was located and its define() calls were parsed statically."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Make sure wp-config.php exists in the WordPress directory or its parent and is readable by the account running this audit.",
+                "markdown": "The configuration file was located and its define() calls were parsed statically.\n\n**Remediation:** Make sure wp-config.php exists in the WordPress directory or its parent and is readable by the account running this audit.\n\n**References:**\n- <https://developer.wordpress.org/apis/wp-config-php/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/apis/wp-config-php/"
+            },
+            {
+              "id": "WPSD-CONFIG-002",
+              "shortDescription": {
+                "text": "WP_DEBUG is enabled"
+              },
+              "fullDescription": {
+                "text": "WP_DEBUG turns on verbose PHP notices and debugging behaviour. On a production site it can reveal file paths, plugin internals and query details to visitors or logs."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Set define( 'WP_DEBUG', false ); on production sites. Use a separate staging site for debugging.",
+                "markdown": "WP_DEBUG turns on verbose PHP notices and debugging behaviour. On a production site it can reveal file paths, plugin internals and query details to visitors or logs.\n\n**Remediation:** Set define( 'WP_DEBUG', false ); on production sites. Use a separate staging site for debugging.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/>\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/"
+            },
+            {
+              "id": "WPSD-CONFIG-003",
+              "shortDescription": {
+                "text": "Errors are displayed to visitors (WP_DEBUG_DISPLAY)"
+              },
+              "fullDescription": {
+                "text": "When WP_DEBUG is true, WP_DEBUG_DISPLAY defaults to true, which prints PHP errors into page output. Error messages commonly disclose absolute paths and code details."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Set define( 'WP_DEBUG_DISPLAY', false ); (and keep WP_DEBUG false in production).",
+                "markdown": "When WP_DEBUG is true, WP_DEBUG_DISPLAY defaults to true, which prints PHP errors into page output. Error messages commonly disclose absolute paths and code details.\n\n**Remediation:** Set define( 'WP_DEBUG_DISPLAY', false ); (and keep WP_DEBUG false in production).\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/"
+            },
+            {
+              "id": "WPSD-CONFIG-004",
+              "shortDescription": {
+                "text": "Debug log written to a web-accessible default location"
+              },
+              "fullDescription": {
+                "text": "WP_DEBUG_LOG = true writes wp-content/debug.log, which most web servers serve to anyone who requests it unless access is explicitly denied."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Disable WP_DEBUG_LOG in production, or set it to an absolute path outside the web root, e.g. define( 'WP_DEBUG_LOG', '/var/log/wordpress/debug.log' );",
+                "markdown": "WP_DEBUG_LOG = true writes wp-content/debug.log, which most web servers serve to anyone who requests it unless access is explicitly denied.\n\n**Remediation:** Disable WP_DEBUG_LOG in production, or set it to an absolute path outside the web root, e.g. define( 'WP_DEBUG_LOG', '/var/log/wordpress/debug.log' );\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/"
+            },
+            {
+              "id": "WPSD-CONFIG-005",
+              "shortDescription": {
+                "text": "SCRIPT_DEBUG is enabled"
+              },
+              "fullDescription": {
+                "text": "SCRIPT_DEBUG loads unminified development versions of core CSS and JavaScript. It is a development setting and slightly increases information exposure and page weight."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Set define( 'SCRIPT_DEBUG', false ); on production sites.",
+                "markdown": "SCRIPT_DEBUG loads unminified development versions of core CSS and JavaScript. It is a development setting and slightly increases information exposure and page weight.\n\n**Remediation:** Set define( 'SCRIPT_DEBUG', false ); on production sites.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "LOW",
+                "security-severity": "3.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/"
+            },
+            {
+              "id": "WPSD-CONFIG-006",
+              "shortDescription": {
+                "text": "Built-in theme/plugin file editor is enabled"
+              },
+              "fullDescription": {
+                "text": "Without DISALLOW_FILE_EDIT, any administrator account (including a compromised one) can edit PHP code from the dashboard, turning an account takeover into code execution."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Add define( 'DISALLOW_FILE_EDIT', true ); to wp-config.php. DISALLOW_FILE_MODS = true also disables the editor but additionally blocks plugin/theme installs and updates.",
+                "markdown": "Without DISALLOW_FILE_EDIT, any administrator account (including a compromised one) can edit PHP code from the dashboard, turning an account takeover into code execution.\n\n**Remediation:** Add define( 'DISALLOW_FILE_EDIT', true ); to wp-config.php. DISALLOW_FILE_MODS = true also disables the editor but additionally blocks plugin/theme installs and updates.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>\n- <https://developer.wordpress.org/apis/wp-config-php/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/hardening/"
+            },
+            {
+              "id": "WPSD-CONFIG-007",
+              "shortDescription": {
+                "text": "FORCE_SSL_ADMIN is not enabled"
+              },
+              "fullDescription": {
+                "text": "FORCE_SSL_ADMIN makes WordPress require HTTPS for logins and the dashboard. HTTPS may also be enforced by the web server or a proxy, which this offline audit cannot see."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "If the site is served over HTTPS, add define( 'FORCE_SSL_ADMIN', true ); or verify that the web server redirects all admin traffic to HTTPS.",
+                "markdown": "FORCE_SSL_ADMIN makes WordPress require HTTPS for logins and the dashboard. HTTPS may also be enforced by the web server or a proxy, which this offline audit cannot see.\n\n**Remediation:** If the site is served over HTTPS, add define( 'FORCE_SSL_ADMIN', true ); or verify that the web server redirects all admin traffic to HTTPS.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/https/>\n- <https://developer.wordpress.org/apis/wp-config-php/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "LOW",
+                "security-severity": "3.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/https/"
+            },
+            {
+              "id": "WPSD-CONFIG-008",
+              "shortDescription": {
+                "text": "Authentication keys and salts"
+              },
+              "fullDescription": {
+                "text": "The eight keys/salts sign login cookies and nonces. Missing, placeholder or short values make cookies easier to forge."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Generate fresh values from the official generator and replace all eight definitions. This logs out every user, which is intended.",
+                "markdown": "The eight keys/salts sign login cookies and nonces. Missing, placeholder or short values make cookies easier to forge.\n\n**Remediation:** Generate fresh values from the official generator and replace all eight definitions. This logs out every user, which is intended.\n\n**References:**\n- <https://api.wordpress.org/secret-key/1.1/salt/>\n- <https://developer.wordpress.org/apis/wp-config-php/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://api.wordpress.org/secret-key/1.1/salt/"
+            },
+            {
+              "id": "WPSD-CONFIG-009",
+              "shortDescription": {
+                "text": "Automatic core updates are disabled"
+              },
+              "fullDescription": {
+                "text": "Disabling the background updater means security releases are not applied automatically."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Remove AUTOMATIC_UPDATER_DISABLED / WP_AUTO_UPDATE_CORE = false, or make sure a documented process applies WordPress security releases promptly.",
+                "markdown": "Disabling the background updater means security releases are not applied automatically.\n\n**Remediation:** Remove AUTOMATIC_UPDATER_DISABLED / WP_AUTO_UPDATE_CORE = false, or make sure a documented process applies WordPress security releases promptly.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/upgrade/upgrading/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "LOW",
+                "security-severity": "3.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/upgrade/upgrading/"
+            },
+            {
+              "id": "WPSD-CONFIG-010",
+              "shortDescription": {
+                "text": "Database repair page is enabled (WP_ALLOW_REPAIR)"
+              },
+              "fullDescription": {
+                "text": "With WP_ALLOW_REPAIR true, /wp-admin/maint/repair.php is reachable without logging in and can be used to trigger expensive database operations."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Remove define( 'WP_ALLOW_REPAIR', true ); once the repair is finished.",
+                "markdown": "With WP_ALLOW_REPAIR true, /wp-admin/maint/repair.php is reachable without logging in and can be used to trigger expensive database operations.\n\n**Remediation:** Remove define( 'WP_ALLOW_REPAIR', true ); once the repair is finished.\n\n**References:**\n- <https://developer.wordpress.org/apis/wp-config-php/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/apis/wp-config-php/"
+            },
+            {
+              "id": "WPSD-CONFIG-011",
+              "shortDescription": {
+                "text": "Unfiltered uploads are allowed (ALLOW_UNFILTERED_UPLOADS)"
+              },
+              "fullDescription": {
+                "text": "ALLOW_UNFILTERED_UPLOADS lets privileged users upload any file type, including executable scripts, bypassing WordPress' MIME type allow-list."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Remove define( 'ALLOW_UNFILTERED_UPLOADS', true ); and allow specific extra MIME types with the upload_mimes filter instead.",
+                "markdown": "ALLOW_UNFILTERED_UPLOADS lets privileged users upload any file type, including executable scripts, bypassing WordPress' MIME type allow-list.\n\n**Remediation:** Remove define( 'ALLOW_UNFILTERED_UPLOADS', true ); and allow specific extra MIME types with the upload_mimes filter instead.\n\n**References:**\n- <https://developer.wordpress.org/apis/wp-config-php/>\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "config"
+                ],
+                "category": "config",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/apis/wp-config-php/"
+            },
+            {
+              "id": "WPSD-CORE-001",
+              "shortDescription": {
+                "text": "WordPress installation detected"
+              },
+              "fullDescription": {
+                "text": "Core version and layout as declared in wp-includes/version.php. The declared version can be edited by an attacker; only checksum verification confirms it."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Core version and layout as declared in wp-includes/version.php. The declared version can be edited by an attacker; only checksum verification confirms it.",
+                "markdown": "Core version and layout as declared in wp-includes/version.php. The declared version can be edited by an attacker; only checksum verification confirms it.\n\n**Remediation:** \n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/server/wordpress-in-directory/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "core"
+                ],
+                "category": "core",
+                "severity": "INFO"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/server/wordpress-in-directory/"
+            },
+            {
+              "id": "WPSD-CORE-002",
+              "shortDescription": {
+                "text": "Core files differ from official checksums"
+              },
+              "fullDescription": {
+                "text": "These core files do not match the official WordPress.org checksums for the declared version and locale. Core files should never be edited; a mismatch is a confirmed modification (malicious or not)."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Compare the files with a clean copy of the same version, then reinstall core (Dashboard > Updates > Re-install, or wp core download --force --skip-content). If the changes are malicious, treat the site as compromised.",
+                "markdown": "These core files do not match the official WordPress.org checksums for the declared version and locale. Core files should never be edited; a mismatch is a confirmed modification (malicious or not).\n\n**Remediation:** Compare the files with a clean copy of the same version, then reinstall core (Dashboard > Updates > Re-install, or wp core download --force --skip-content). If the changes are malicious, treat the site as compromised.\n\n**References:**\n- <https://developer.wordpress.org/cli/commands/core/verify-checksums/>\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "core"
+                ],
+                "category": "core",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/cli/commands/core/verify-checksums/"
+            },
+            {
+              "id": "WPSD-CORE-003",
+              "shortDescription": {
+                "text": "Unexpected files inside core directories"
+              },
+              "fullDescription": {
+                "text": "These files are inside wp-admin/, wp-includes/ or the core root but are not part of the official release. They can be leftovers from old versions, host tooling or injected code."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Identify where each file comes from; remove it if nothing legitimate needs it.",
+                "markdown": "These files are inside wp-admin/, wp-includes/ or the core root but are not part of the official release. They can be leftovers from old versions, host tooling or injected code.\n\n**Remediation:** Identify where each file comes from; remove it if nothing legitimate needs it.\n\n**References:**\n- <https://developer.wordpress.org/cli/commands/core/verify-checksums/>\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "core"
+                ],
+                "category": "core",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/cli/commands/core/verify-checksums/"
+            },
+            {
+              "id": "WPSD-CORE-004",
+              "shortDescription": {
+                "text": "Core files are missing"
+              },
+              "fullDescription": {
+                "text": "Files listed in the official checksums are missing. This is often deliberate (e.g. readme.html removed) but can also indicate a broken update."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Re-install core for the current version if functionality is affected.",
+                "markdown": "Files listed in the official checksums are missing. This is often deliberate (e.g. readme.html removed) but can also indicate a broken update.\n\n**Remediation:** Re-install core for the current version if functionality is affected.\n\n**References:**\n- <https://developer.wordpress.org/cli/commands/core/verify-checksums/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "core"
+                ],
+                "category": "core",
+                "severity": "LOW",
+                "security-severity": "3.0"
+              },
+              "helpUri": "https://developer.wordpress.org/cli/commands/core/verify-checksums/"
+            },
+            {
+              "id": "WPSD-CORE-005",
+              "shortDescription": {
+                "text": "WP-CLI core checksum verification"
+              },
+              "fullDescription": {
+                "text": "Result of `wp core verify-checksums` (downloads official checksums; runs before WordPress is loaded)."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Reinstall modified core files with wp core download --force --skip-content and review any reported extra files.",
+                "markdown": "Result of `wp core verify-checksums` (downloads official checksums; runs before WordPress is loaded).\n\n**Remediation:** Reinstall modified core files with wp core download --force --skip-content and review any reported extra files.\n\n**References:**\n- <https://developer.wordpress.org/cli/commands/core/verify-checksums/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "core"
+                ],
+                "category": "core",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/cli/commands/core/verify-checksums/"
+            },
+            {
+              "id": "WPSD-FILES-001",
+              "shortDescription": {
+                "text": "PHP files in the uploads directory"
+              },
+              "fullDescription": {
+                "text": "wp-content/uploads should only hold media and documents. Executable PHP there is a common sign of a web shell or a vulnerable upload handler, although a few plugins store PHP stubs or cache files there legitimately."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Inspect each file. If it is not created by a plugin you trust, take the site offline, preserve a copy for analysis and follow the hacked-site FAQ. Prevent PHP execution in uploads at the web-server level.",
+                "markdown": "wp-content/uploads should only hold media and documents. Executable PHP there is a common sign of a web shell or a vulnerable upload handler, although a few plugins store PHP stubs or cache files there legitimately.\n\n**Remediation:** Inspect each file. If it is not created by a plugin you trust, take the site offline, preserve a copy for analysis and follow the hacked-site FAQ. Prevent PHP execution in uploads at the web-server level.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/hardening/"
+            },
+            {
+              "id": "WPSD-FILES-002",
+              "shortDescription": {
+                "text": "PHP files in unusual locations or with disguised names"
+              },
+              "fullDescription": {
+                "text": "Hidden PHP files, double extensions such as image.jpg.php, unknown PHP files directly in wp-content and leftovers in wp-content/upgrade are frequently used to hide malicious code."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Confirm each file belongs to a plugin, theme or hosting tool you recognise; remove it otherwise (after taking a backup for forensics).",
+                "markdown": "Hidden PHP files, double extensions such as image.jpg.php, unknown PHP files directly in wp-content and leftovers in wp-content/upgrade are frequently used to hide malicious code.\n\n**Remediation:** Confirm each file belongs to a plugin, theme or hosting tool you recognise; remove it otherwise (after taking a backup for forensics).\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/hardening/"
+            },
+            {
+              "id": "WPSD-FILES-003",
+              "shortDescription": {
+                "text": "Code patterns associated with web shells or obfuscation"
+              },
+              "fullDescription": {
+                "text": "These patterns (eval of decoded data, execution of request parameters, known web-shell markers, very long encoded blobs) are typical of malware, but some legitimate plugins, licensing code and libraries use them too."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Review the reported lines. Compare plugin/theme files with a fresh copy from the vendor. If the code is malicious, treat the whole site as compromised.",
+                "markdown": "These patterns (eval of decoded data, execution of request parameters, known web-shell markers, very long encoded blobs) are typical of malware, but some legitimate plugins, licensing code and libraries use them too.\n\n**Remediation:** Review the reported lines. Compare plugin/theme files with a fresh copy from the vendor. If the code is malicious, treat the whole site as compromised.\n\n**References:**\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://wordpress.org/documentation/article/faq-my-site-was-hacked/"
+            },
+            {
+              "id": "WPSD-FILES-004",
+              "shortDescription": {
+                "text": "Media files in uploads that contain PHP code"
+              },
+              "fullDescription": {
+                "text": "A file with an image or document extension whose content starts with or contains a PHP open tag is often a payload waiting to be included by another script."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Open the file in a text editor (do not execute it). Remove it if it is not a genuine media file and search for the code that includes it.",
+                "markdown": "A file with an image or document extension whose content starts with or contains a PHP open tag is often a payload waiting to be included by another script.\n\n**Remediation:** Open the file in a text editor (do not execute it). Remove it if it is not a genuine media file and search for the code that includes it.\n\n**References:**\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://wordpress.org/documentation/article/faq-my-site-was-hacked/"
+            },
+            {
+              "id": "WPSD-FILES-005",
+              "shortDescription": {
+                "text": "Backup copies of wp-config.php"
+              },
+              "fullDescription": {
+                "text": "Copies such as wp-config.php.bak or wp-config.php~ are not executed by PHP, so a web server may serve them as plain text, exposing database credentials and salts."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Delete the copies from the web root (keep backups elsewhere) and rotate the database password and salts if the files may have been downloaded.",
+                "markdown": "Copies such as wp-config.php.bak or wp-config.php~ are not executed by PHP, so a web server may serve them as plain text, exposing database credentials and salts.\n\n**Remediation:** Delete the copies from the web root (keep backups elsewhere) and rotate the database password and salts if the files may have been downloaded.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>\n- <https://developer.wordpress.org/advanced-administration/security/backup/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/hardening/"
+            },
+            {
+              "id": "WPSD-FILES-006",
+              "shortDescription": {
+                "text": "Database dumps or archives inside the web root"
+              },
+              "fullDescription": {
+                "text": "SQL dumps and site archives in a web-accessible directory can be downloaded by anyone who guesses the name and usually contain password hashes and secrets."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Move backups outside the web root or to off-site storage.",
+                "markdown": "SQL dumps and site archives in a web-accessible directory can be downloaded by anyone who guesses the name and usually contain password hashes and secrets.\n\n**Remediation:** Move backups outside the web root or to off-site storage.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/backup/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/backup/"
+            },
+            {
+              "id": "WPSD-FILES-007",
+              "shortDescription": {
+                "text": "Log files inside the web root"
+              },
+              "fullDescription": {
+                "text": "debug.log and PHP error_log files often contain paths, queries and sometimes personal data, and are served by default by many web servers."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Delete stale logs, disable debug logging in production, or write logs outside the web root.",
+                "markdown": "debug.log and PHP error_log files often contain paths, queries and sometimes personal data, and are served by default by many web servers.\n\n**Remediation:** Delete stale logs, disable debug logging in production, or write logs outside the web root.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/"
+            },
+            {
+              "id": "WPSD-FILES-008",
+              "shortDescription": {
+                "text": "Development or administration tools left in the web root"
+              },
+              "fullDescription": {
+                "text": "phpinfo() pages, database tools such as Adminer, .env files and version-control directories reveal configuration or give direct access to data."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Remove these files from production or block access to them at the web-server level.",
+                "markdown": "phpinfo() pages, database tools such as Adminer, .env files and version-control directories reveal configuration or give direct access to data.\n\n**Remediation:** Remove these files from production or block access to them at the web-server level.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "files"
+                ],
+                "category": "files",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/hardening/"
+            },
+            {
+              "id": "WPSD-PERM-001",
+              "shortDescription": {
+                "text": "World-writable files or directories"
+              },
+              "fullDescription": {
+                "text": "Any local account (other hosting customers, compromised services) can modify world-writable files, which allows code injection into the site."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Remove the 'other' write bit, e.g. find <path> -perm -o+w -exec chmod o-w {} +. Typical modes are 755 for directories and 644 for files.",
+                "markdown": "Any local account (other hosting customers, compromised services) can modify world-writable files, which allows code injection into the site.\n\n**Remediation:** Remove the 'other' write bit, e.g. find <path> -perm -o+w -exec chmod o-w {} +. Typical modes are 755 for directories and 644 for files.\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/server/file-permissions/>\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "permissions"
+                ],
+                "category": "permissions",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/server/file-permissions/"
+            },
+            {
+              "id": "WPSD-PERM-002",
+              "shortDescription": {
+                "text": "wp-config.php permissions are too open"
+              },
+              "fullDescription": {
+                "text": "wp-config.php holds database credentials and salts. Read access for 'other' lets every local account read them; group write lets the group change site configuration."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Restrict the file, e.g. chmod 640 wp-config.php (or 600/440/400 depending on how PHP runs).",
+                "markdown": "wp-config.php holds database credentials and salts. Read access for 'other' lets every local account read them; group write lets the group change site configuration.\n\n**Remediation:** Restrict the file, e.g. chmod 640 wp-config.php (or 600/440/400 depending on how PHP runs).\n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/server/file-permissions/>\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "permissions"
+                ],
+                "category": "permissions",
+                "severity": "MEDIUM",
+                "security-severity": "5.5"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/server/file-permissions/"
+            },
+            {
+              "id": "WPSD-PLUGIN-001",
+              "shortDescription": {
+                "text": "Installed plugins"
+              },
+              "fullDescription": {
+                "text": "Plugins found in the plugins directory with the version declared in their header. Keep this list short and up to date; check versions against a vulnerability database."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Plugins found in the plugins directory with the version declared in their header. Keep this list short and up to date; check versions against a vulnerability database.",
+                "markdown": "Plugins found in the plugins directory with the version declared in their header. Keep this list short and up to date; check versions against a vulnerability database.\n\n**Remediation:** \n\n**References:**\n- <https://developer.wordpress.org/advanced-administration/security/hardening/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "plugins"
+                ],
+                "category": "plugins",
+                "severity": "INFO"
+              },
+              "helpUri": "https://developer.wordpress.org/advanced-administration/security/hardening/"
+            },
+            {
+              "id": "WPSD-PLUGIN-002",
+              "shortDescription": {
+                "text": "Must-use plugins and drop-ins (review)"
+              },
+              "fullDescription": {
+                "text": "Must-use plugins and drop-ins load automatically and are not listed on the regular Plugins screen, so they are a popular place to hide persistent malware. Many hosts and caching plugins install them legitimately."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Confirm that every listed file was installed by you, your host or a plugin you trust.",
+                "markdown": "Must-use plugins and drop-ins load automatically and are not listed on the regular Plugins screen, so they are a popular place to hide persistent malware. Many hosts and caching plugins install them legitimately.\n\n**Remediation:** Confirm that every listed file was installed by you, your host or a plugin you trust.\n\n**References:**\n- <https://wordpress.org/documentation/article/faq-my-site-was-hacked/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "plugins"
+                ],
+                "category": "plugins",
+                "severity": "INFO"
+              },
+              "helpUri": "https://wordpress.org/documentation/article/faq-my-site-was-hacked/"
+            },
+            {
+              "id": "WPSD-PLUGIN-003",
+              "shortDescription": {
+                "text": "Plugin files differ from WordPress.org checksums"
+              },
+              "fullDescription": {
+                "text": "Result of `wp plugin verify-checksums --all`. Modified or added files in a plugin hosted on WordPress.org are a confirmed deviation from the published release."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Reinstall affected plugins from a trusted source (wp plugin install <slug> --force --version=<version>) and investigate how the files were changed.",
+                "markdown": "Result of `wp plugin verify-checksums --all`. Modified or added files in a plugin hosted on WordPress.org are a confirmed deviation from the published release.\n\n**Remediation:** Reinstall affected plugins from a trusted source (wp plugin install <slug> --force --version=<version>) and investigate how the files were changed.\n\n**References:**\n- <https://developer.wordpress.org/cli/commands/plugin/verify-checksums/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "plugins"
+                ],
+                "category": "plugins",
+                "severity": "HIGH",
+                "security-severity": "8.0"
+              },
+              "helpUri": "https://developer.wordpress.org/cli/commands/plugin/verify-checksums/"
+            },
+            {
+              "id": "WPSD-PLUGIN-004",
+              "shortDescription": {
+                "text": "Plugins that could not be verified"
+              },
+              "fullDescription": {
+                "text": "WordPress.org publishes checksums only for plugins it hosts. Premium, custom or delisted plugins cannot be verified this way."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Compare these plugins against a fresh copy from their vendor.",
+                "markdown": "WordPress.org publishes checksums only for plugins it hosts. Premium, custom or delisted plugins cannot be verified this way.\n\n**Remediation:** Compare these plugins against a fresh copy from their vendor.\n\n**References:**\n- <https://developer.wordpress.org/cli/commands/plugin/verify-checksums/>"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "plugins"
+                ],
+                "category": "plugins",
+                "severity": "INFO"
+              },
+              "helpUri": "https://developer.wordpress.org/cli/commands/plugin/verify-checksums/"
+            },
+            {
+              "id": "WPSD-SCAN-001",
+              "shortDescription": {
+                "text": "Scan coverage"
+              },
+              "fullDescription": {
+                "text": "How much of the installation the scanner could inspect. Limits, unreadable paths and symlinks that point outside the scan root reduce coverage."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Re-run with higher --max-files / --max-depth, or as a user who can read all files.",
+                "markdown": "How much of the installation the scanner could inspect. Limits, unreadable paths and symlinks that point outside the scan root reduce coverage.\n\n**Remediation:** Re-run with higher --max-files / --max-depth, or as a user who can read all files."
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "scan"
+                ],
+                "category": "scan",
+                "severity": "INFO"
+              }
+            },
+            {
+              "id": "WPSD-SCAN-002",
+              "shortDescription": {
+                "text": "A check failed to run"
+              },
+              "fullDescription": {
+                "text": "An unexpected error stopped this check category. Other categories were not affected."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Please report this with the error message (no site data needed).",
+                "markdown": "An unexpected error stopped this check category. Other categories were not affected.\n\n**Remediation:** Please report this with the error message (no site data needed)."
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "wordpress",
+                  "scan"
+                ],
+                "category": "scan",
+                "severity": "INFO"
+              }
+            }
+          ]
+        }
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "description": {
+            "text": "Repository root. Artifact URIs are relative to the scanned WordPress directory joined with the prefix 'public_html'."
+          }
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "toolExecutionNotifications": [],
+          "properties": {
+            "readOnly": true,
+            "offline": true,
+            "networkIntegrations": [],
+            "checks": [
+              "config",
+              "files"
+            ]
+          }
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "WPSD-CONFIG-003",
+          "ruleIndex": 2,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Errors are displayed to visitors (WP_DEBUG_DISPLAY): wp-config.php:16 (parent directory of the scan root). Severity MEDIUM, status FAIL, basis observed. Evidence: WP_DEBUG = true (line 16); WP_DEBUG_DISPLAY is not defined; WP_DEBUG_DISPLAY defaults to true when not defined."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "wp-config.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 16
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "0abc968e6a949fbbecabaf6a3fd74215"
+          },
+          "properties": {
+            "severity": "MEDIUM",
+            "status": "FAIL",
+            "basis": "observed",
+            "category": "config"
+          }
+        },
+        {
+          "ruleId": "WPSD-FILES-001",
+          "ruleIndex": 16,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "PHP files in the uploads directory: public_html/wp-content/uploads/2024/05/shell me.php. Severity HIGH, status WARN, basis heuristic. Evidence: 2 PHP-like file(s) under wp-content/uploads."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "public_html/wp-content/uploads/2024/05/shell%20me.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "20c5983d15e7c4021b07f90bf2969986"
+          },
+          "properties": {
+            "severity": "HIGH",
+            "status": "WARN",
+            "basis": "heuristic",
+            "category": "files"
+          }
+        },
+        {
+          "ruleId": "WPSD-FILES-001",
+          "ruleIndex": 16,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "PHP files in the uploads directory: public_html/wp-content/uploads/[REDACTED].php. Severity HIGH, status WARN, basis heuristic. Evidence: 2 PHP-like file(s) under wp-content/uploads."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "public_html/wp-content/uploads/%5BREDACTED%5D.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "f67b0dd98559cacaca5d239a1291a236"
+          },
+          "properties": {
+            "severity": "HIGH",
+            "status": "WARN",
+            "basis": "heuristic",
+            "category": "files"
+          }
+        },
+        {
+          "ruleId": "WPSD-FILES-003",
+          "ruleIndex": 18,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Code patterns associated with web shells or obfuscation: public_html/wp-content/uploads/2024/05/shell me.php:1 (eval of decoded/obfuscated data). Severity HIGH, status WARN, basis heuristic. Evidence: 15 PHP-like file(s) scanned (first 2048 KiB of each); 1 pattern match(es)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "public_html/wp-content/uploads/2024/05/shell%20me.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "8fecdd83dc507c2e58d42d95752cd3f8"
+          },
+          "properties": {
+            "severity": "HIGH",
+            "status": "WARN",
+            "basis": "heuristic",
+            "category": "files"
+          }
+        },
+        {
+          "ruleId": "WPSD-FILES-005",
+          "ruleIndex": 20,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Backup copies of wp-config.php: public_html/wp-config.php.bak. Severity HIGH, status WARN, basis observed. Evidence: 1 file(s) found; whether they are downloadable depends on the web-server configuration."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "public_html/wp-config.php.bak",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "86c16060bd9e4418fcb3353dec25ce34"
+          },
+          "properties": {
+            "severity": "HIGH",
+            "status": "WARN",
+            "basis": "observed",
+            "category": "files"
+          }
+        },
+        {
+          "ruleId": "WPSD-FILES-006",
+          "ruleIndex": 21,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Database dumps or archives inside the web root: public_html/backup.sql. Severity HIGH, status WARN, basis observed. Evidence: 1 file(s) found; whether they are downloadable depends on the web-server configuration."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "public_html/backup.sql",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "0fd484d9999531f054b4bd7da013fb2d"
+          },
+          "properties": {
+            "severity": "HIGH",
+            "status": "WARN",
+            "basis": "observed",
+            "category": "files"
+          }
+        },
+        {
+          "ruleId": "WPSD-CONFIG-002",
+          "ruleIndex": 1,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "WP_DEBUG is enabled: wp-config.php:16 (parent directory of the scan root). Severity MEDIUM, status WARN, basis observed. Evidence: WP_DEBUG = true (line 16)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "wp-config.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 16
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "087d56425a181477697903c0051e09ec"
+          },
+          "properties": {
+            "severity": "MEDIUM",
+            "status": "WARN",
+            "basis": "observed",
+            "category": "config"
+          }
+        },
+        {
+          "ruleId": "WPSD-CONFIG-006",
+          "ruleIndex": 5,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Built-in theme/plugin file editor is enabled: wp-config.php (parent directory of the scan root). Severity MEDIUM, status WARN, basis observed. Evidence: DISALLOW_FILE_EDIT is not defined; DISALLOW_FILE_MODS is not defined."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "wp-config.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "109deb051687864eed6ea44f76959ec1"
+          },
+          "properties": {
+            "severity": "MEDIUM",
+            "status": "WARN",
+            "basis": "observed",
+            "category": "config"
+          }
+        },
+        {
+          "ruleId": "WPSD-CONFIG-007",
+          "ruleIndex": 6,
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "FORCE_SSL_ADMIN is not enabled: wp-config.php (parent directory of the scan root). Severity LOW, status WARN, basis observed. Evidence: FORCE_SSL_ADMIN is not defined."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "wp-config.php",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "wpsdLocationHash/v1": "0127f9dc95ec6b9ff95a8a09c8da5163"
+          },
+          "properties": {
+            "severity": "LOW",
+            "status": "WARN",
+            "basis": "observed",
+            "category": "config"
+          }
+        }
+      ],
+      "columnKind": "unicodeCodePoints",
+      "properties": {
+        "wordpressVersion": "6.6.2",
+        "layout": "parent-config",
+        "summary": {
+          "PASS": 12,
+          "WARN": 7,
+          "FAIL": 1,
+          "SKIPPED": 0,
+          "UNKNOWN": 0
+        },
+        "highestOpenSeverity": "HIGH",
+        "disclaimer": "This is a read-only configuration and file-system audit. Passing every check does not mean the site is secure: it does not test the running site, the database, user accounts, server configuration or known plugin vulnerabilities, and its heuristics can miss malware or flag legitimate code."
+      }
+    }
+  ]
+}

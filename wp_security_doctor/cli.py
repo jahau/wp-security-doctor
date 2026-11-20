@@ -50,7 +50,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("scan", help="audit a WordPress installation (read-only)")
     s.add_argument("path", type=Path, help="WordPress directory (or a directory containing it)")
-    s.add_argument("--format", choices=("text", "json"), default="text")
+    s.add_argument("--format", choices=("text", "json", "sarif"), default="text")
+    s.add_argument(
+        "--sarif-path-prefix",
+        metavar="DIR",
+        help="with --format sarif: repository-relative directory of the scanned path, prepended to "
+        "artifact URIs (e.g. 'web' when scanning ./web in a GitHub checkout)",
+    )
     s.add_argument("--output", "-o", type=Path, help="write the report to a file (must be outside the scan root)")
     s.add_argument(
         "--checks",
@@ -129,6 +135,15 @@ def _scan(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
     from .scanner import scan
 
     wp_cli = bool(args.wp_cli or args.wp_cli_path)
+    if args.sarif_path_prefix is not None:
+        from .sarif import SarifPathError, normalise_prefix
+
+        if args.format != "sarif":
+            parser.error("--sarif-path-prefix requires --format sarif")
+        try:
+            normalise_prefix(args.sarif_path_prefix)
+        except SarifPathError as exc:
+            parser.error(str(exc))
     if args.offline and (args.fetch_checksums or wp_cli):
         parser.error("--offline cannot be combined with --fetch-checksums or --wp-cli")
     options = ScanOptions(
@@ -163,6 +178,10 @@ def _scan(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
 
     if args.format == "json":
         text = render_json(report)
+    elif args.format == "sarif":
+        from .sarif import render_sarif
+
+        text = render_sarif(report, all_rules(), args.sarif_path_prefix)
     else:
         stream = sys.stdout if args.output is None else None
         text = render_text(report, color=use_color(stream, args.color), verbose=args.verbose)

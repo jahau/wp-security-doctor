@@ -4,6 +4,42 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - Unreleased
+
+Adds SARIF output so findings can be shown in GitHub code scanning. Nothing else in the
+scan changes: it stays read-only and offline by default, and the text output, JSON output
+(`schema_version: 1`) and exit codes are unchanged.
+
+### Added
+
+- `--format sarif`: a [SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html)
+  log for GitHub code scanning and other SARIF tools.
+  - Every rule is listed under its stable `WPSD-*` ID, with title, explanation, remediation
+    (text and Markdown) and documentation link.
+  - Severity maps to the SARIF `level` (CRITICAL/HIGH `error`, MEDIUM `warning`, LOW/INFO
+    `note`) and to GitHub's `security-severity` (9.5 / 8.0 / 5.5 / 3.0).
+  - Each FAIL/WARN location becomes one result with a relative file URI. Line numbers are
+    included for code-pattern hits and for `wp-config.php` constants.
+  - UNKNOWN and SKIPPED findings become tool execution notifications, not alerts. A crashed
+    check sets `executionSuccessful: false`.
+- `--sarif-path-prefix DIR` maps paths to the repository root when a subdirectory is scanned.
+  It rejects absolute paths and `..`.
+- [GitHub code scanning guide](docs/github-code-scanning.md) and an
+  [example workflow](docs/examples/wp-security-doctor-code-scanning.yml) using
+  `github/codeql-action/upload-sarif@v4`.
+- Tests that validate SARIF against the vendored official OASIS schema, compare a synthetic scan
+  with a golden SARIF file, and check GitHub's ingestion constraints. They also verify
+  that exit codes are the same for every format, and that a SARIF scan leaves the tree
+  unchanged and makes no network or process calls. `jsonschema` is a new development-only
+  dependency. The tool itself still has no runtime dependencies.
+- More package keywords and classifiers, and project URLs for the changelog and issues.
+
+### Security
+
+- SARIF output never contains absolute paths (the scan root, its parent, or absolute paths in
+  evidence such as a custom `WP_DEBUG_LOG`), the command line, host or user names, or timestamps.
+  It applies the same secret redaction as the other formats.
+
 ## [0.2.0] - 2026-11-14
 
 The single-file prototype is now a tested, installable package. The scan stays read-only and is
@@ -60,5 +96,6 @@ offline by default.
 - Initial prototype: `python wp_doctor.py <path>`, with basic `WP_DEBUG`/`DISALLOW_FILE_EDIT`
   checks, PHP files in uploads, and world-writable directories.
 
+[0.3.0]: https://github.com/jahau/wp-security-doctor/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/jahau/wp-security-doctor/compare/6e7d9f2...v0.2.0
 [0.1.0]: https://github.com/jahau/wp-security-doctor/commit/6e7d9f2

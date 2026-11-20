@@ -1,0 +1,59 @@
+# Example GitHub Actions workflow: audit a WordPress tree stored in this repository and
+# upload the results to GitHub code scanning (Security > Code scanning).
+#
+# Copy to .github/workflows/wp-security-doctor.yml in the repository that contains your
+# WordPress files and adjust WP_PATH. The scan reads the checkout only: it is offline,
+# read-only and never contacts the live site.
+name: WordPress security audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * 1" # weekly, Monday 04:17 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  wp-security-doctor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # upload SARIF to code scanning
+      actions: read # only needed in private repositories
+    env:
+      # Directory of the WordPress installation, relative to the repository root.
+      # Use "." if WordPress sits at the root, "web" for Bedrock, etc.
+      WP_PATH: public_html
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install WP Security Doctor
+        run: pip install "git+https://github.com/jahau/wp-security-doctor.git@v0.3.0"
+
+      - name: Scan (SARIF)
+        # --fail-on never: always produce the report so it can be uploaded; gate below.
+        # The report must be written outside the scanned directory, hence RUNNER_TEMP.
+        run: >
+          wp-security-doctor scan "$WP_PATH"
+          --offline
+          --format sarif
+          --sarif-path-prefix "$WP_PATH"
+          --fail-on never
+          --output "$RUNNER_TEMP/wp-security-doctor.sarif"
+
+      - name: Upload to GitHub code scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ${{ runner.temp }}/wp-security-doctor.sarif
+          category: wp-security-doctor
+
+      - name: Fail on high-severity findings (optional gate)
+        run: wp-security-doctor scan "$WP_PATH" --offline --fail-on high --color never

@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/).
 
-## [0.3.0] - Unreleased
+## [0.3.0] - 2026-11-20
 
 Adds SARIF output so findings can be shown in GitHub code scanning. Nothing else in the
 scan changes: it stays read-only and offline by default, and the text output, JSON output
@@ -96,6 +96,6 @@ offline by default.
 - Initial prototype: `python wp_doctor.py <path>`, with basic `WP_DEBUG`/`DISALLOW_FILE_EDIT`
   checks, PHP files in uploads, and world-writable directories.
 
-[0.3.0]: https://github.com/jahau/wp-security-doctor/compare/v0.2.0...HEAD
+[0.3.0]: https://github.com/jahau/wp-security-doctor/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/jahau/wp-security-doctor/compare/6e7d9f2...v0.2.0
 [0.1.0]: https://github.com/jahau/wp-security-doctor/commit/6e7d9f2
